@@ -70,7 +70,7 @@ function MaschineSigmaController:createPages()
     local Sigma = "Scripts/Maschine/MaschineSigma/Pages/"
     local MaschineShared = "Scripts/Maschine/Shared/Pages/"
 
-    self.PageManager:register(NI.HW.PAGE_FILE, Sigma .. "FilePageStudio", "FilePageStudio", true)
+    self.PageManager:register(NI.HW.PAGE_FILE, Sigma .. "FilePageSigma", "FilePageSigma", true)
     self.PageManager:register(NI.HW.PAGE_SAVE_AS, MaschineShared .. "SaveAsPage", "SaveAsPage", true)
 
 end

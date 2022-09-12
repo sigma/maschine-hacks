@@ -5,13 +5,13 @@ require "Scripts/Shared/Pages/PageMaschine"
 ------------------------------------------------------------------------------------------------------------------------
 
 local class = require 'Scripts/Shared/Helpers/classy'
-FilePageStudio = class( 'FilePageStudio', PageMaschine )
+FilePageSigma = class( 'FilePageSigma', PageMaschine )
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function FilePageStudio:__init(Controller)
+function FilePageSigma:__init(Controller)
 
-    PageMaschine.__init(self, "FilePageStudio", Controller)
+    PageMaschine.__init(self, "FilePageSigma", Controller)
 
     self.PageLEDs = { NI.HW.LED_ALL }
 
@@ -24,7 +24,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function FilePageStudio:setPinned(Pin)
+function FilePageSigma:setPinned(Pin)
 
     self.IsPinned = true -- always pinned
 
@@ -32,7 +32,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function FilePageStudio:setupScreen()
+function FilePageSigma:setupScreen()
 
     self.Screen = ScreenMaschineStudio(self)
 
@@ -75,7 +75,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function FilePageStudio:onShow(Show)
+function FilePageSigma:onShow(Show)
 
     if Show then
         self.RecentFiles:setFocusItem(0)
@@ -88,7 +88,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function FilePageStudio:updateScreenButtons()
+function FilePageSigma:updateScreenButtons()
 
     local RecentsAvailable = NI.APP.getRecentFilesSize() > 0
 
@@ -107,7 +107,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function FilePageStudio:onScreenButton(Button, Pressed)
+function FilePageSigma:onScreenButton(Button, Pressed)
 
     if Pressed then
 
@@ -160,7 +160,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function FilePageStudio:setRecentsEnabled(Enable)
+function FilePageSigma:setRecentsEnabled(Enable)
 
     self.RecentFiles:setVisible(Enable)
 
@@ -168,7 +168,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function FilePageStudio:getRecentsEnabled()
+function FilePageSigma:getRecentsEnabled()
 
     return self.RecentFiles:isVisible()
 
@@ -176,7 +176,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function FilePageStudio:loadSelectedRecentFile()
+function FilePageSigma:loadSelectedRecentFile()
 
     if self:getRecentsEnabled() and NI.APP.getRecentFilesSize() > 0 then
         NI.HW.ProjectFileCommands.loadRecentProject(App, self.RecentFiles:getFocusItem())
@@ -186,7 +186,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function FilePageStudio:onScreenEncoder(Index, Inc)
+function FilePageSigma:onScreenEncoder(Index, Inc)
 
     if Index == 8 and self:getRecentsEnabled() then
 
@@ -201,7 +201,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function FilePageStudio:onWheelButton(Pressed)
+function FilePageSigma:onWheelButton(Pressed)
 
     if Pressed then
 
@@ -213,7 +213,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function FilePageStudio:onWheel(Inc)
+function FilePageSigma:onWheel(Inc)
 
     if self:getRecentsEnabled() then
         self.RecentFiles:shiftFocusItem(Inc)

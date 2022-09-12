@@ -22,13 +22,13 @@ require "Scripts/Maschine/MaschineStudio/Shared/PatternEditorStudio"
 ------------------------------------------------------------------------------------------------------------------------
 
 local class = require 'Scripts/Shared/Helpers/classy'
-MaschineStudioController = class( 'MaschineStudioController', HardwareControllerBase )
+MaschineSigmaController = class( 'MaschineSigmaController', HardwareControllerBase )
 
 ------------------------------------------------------------------------------------------------------------------------
 -- Constants
 ------------------------------------------------------------------------------------------------------------------------
 
-MaschineStudioController.SCREEN_BUTTON_LEDS =
+MaschineSigmaController.SCREEN_BUTTON_LEDS =
 {
     NI.HW.LED_SCREEN_BUTTON_1,
     NI.HW.LED_SCREEN_BUTTON_2,
@@ -40,7 +40,7 @@ MaschineStudioController.SCREEN_BUTTON_LEDS =
     NI.HW.LED_SCREEN_BUTTON_8
 }
 
-MaschineStudioController.SCREEN_BUTTONS =
+MaschineSigmaController.SCREEN_BUTTONS =
 {
     NI.HW.BUTTON_SCREEN_1,
     NI.HW.BUTTON_SCREEN_2,
@@ -52,7 +52,7 @@ MaschineStudioController.SCREEN_BUTTONS =
     NI.HW.BUTTON_SCREEN_8
 }
 
-MaschineStudioController.GROUP_LEDS =
+MaschineSigmaController.GROUP_LEDS =
 {
     NI.HW.LED_GROUP_A,
     NI.HW.LED_GROUP_B,
@@ -64,7 +64,7 @@ MaschineStudioController.GROUP_LEDS =
     NI.HW.LED_GROUP_H
 }
 
-MaschineStudioController.JOGWHEEL_RING_LEDS =
+MaschineSigmaController.JOGWHEEL_RING_LEDS =
 {
     NI.HW.LED_JOGWHEEL_RING_1,
     NI.HW.LED_JOGWHEEL_RING_2,
@@ -83,7 +83,7 @@ MaschineStudioController.JOGWHEEL_RING_LEDS =
     NI.HW.LED_JOGWHEEL_RING_15
 }
 
-MaschineStudioController.LEVELMETER_LEFT_LEDS =
+MaschineSigmaController.LEVELMETER_LEFT_LEDS =
 {
     NI.HW.LED_LEVEL_LEFT_1,
     NI.HW.LED_LEVEL_LEFT_2,
@@ -103,7 +103,7 @@ MaschineStudioController.LEVELMETER_LEFT_LEDS =
     NI.HW.LED_LEVEL_LEFT_16
 }
 
-MaschineStudioController.LEVELMETER_RIGHT_LEDS =
+MaschineSigmaController.LEVELMETER_RIGHT_LEDS =
 {
     NI.HW.LED_LEVEL_RIGHT_1,
     NI.HW.LED_LEVEL_RIGHT_2,
@@ -125,7 +125,7 @@ MaschineStudioController.LEVELMETER_RIGHT_LEDS =
 
 ------------------------------------------------------------------------------------------------------------------------
 
-MaschineStudioController.GROUP_BUTTONS =
+MaschineSigmaController.GROUP_BUTTONS =
 {
     NI.HW.BUTTON_GROUP_A,
     NI.HW.BUTTON_GROUP_B,
@@ -137,7 +137,7 @@ MaschineStudioController.GROUP_BUTTONS =
     NI.HW.BUTTON_GROUP_H
 }
 
-MaschineStudioController.BUTTON_TO_PAGE =
+MaschineSigmaController.BUTTON_TO_PAGE =
 {
     [NI.HW.BUTTON_CONTROL]      = NI.HW.PAGE_CONTROL,
     [NI.HW.BUTTON_STEP]         = NI.HW.PAGE_STEP,
@@ -163,7 +163,7 @@ MaschineStudioController.BUTTON_TO_PAGE =
 
 ------------------------------------------------------------------------------------------------------------------------
 
-MaschineStudioController.MODIFIER_PAGES =
+MaschineSigmaController.MODIFIER_PAGES =
 {
     NI.HW.PAGE_DUPLICATE,
     NI.HW.PAGE_GRID,
@@ -183,13 +183,13 @@ MaschineStudioController.MODIFIER_PAGES =
 }
 
 -- start hack
-MaschineStudioController.TEMPORARY_PAGES =
+MaschineSigmaController.TEMPORARY_PAGES =
 {
     NI.HW.PAGE_SAVE_AS
 }
 -- end hack
 
-MaschineStudioController.LEDValues = {
+MaschineSigmaController.LEDValues = {
 --  LS_OFF          LS_DIM          LS_DIM_FLASH    LS_BRIGHT       LS_FLASH
     {0.0,           0.25,            1,              1,              1}       --  LVG_MAIN
 }
@@ -198,7 +198,7 @@ MaschineStudioController.LEDValues = {
 -- init
 ------------------------------------------------------------------------------------------------------------------------
 
-function MaschineStudioController:__init()
+function MaschineSigmaController:__init()
 
     -- contruct base class
     HardwareControllerBase.__init(self)
@@ -216,7 +216,7 @@ function MaschineStudioController:__init()
     self.hasJogwheelControls = function() return true end
     self.hasEditControls = function() return true end
 
-    LEDHelper.LEDValues = MaschineStudioController.LEDValues
+    LEDHelper.LEDValues = MaschineSigmaController.LEDValues
 
     NHLController:setPadMode(NI.HW.PAD_MODE_PAGE_DEFAULT)
 
@@ -224,7 +224,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function MaschineStudioController:createPages()
+function MaschineSigmaController:createPages()
 
     -- register pages
     local Sigma = "Scripts/Maschine/MaschineSigma/Pages/"
@@ -275,7 +275,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function MaschineStudioController:createSharedObjects()
+function MaschineSigmaController:createSharedObjects()
 
     self.SharedObjects = {}
 
@@ -304,7 +304,7 @@ end
 -- setup screen button handler
 ------------------------------------------------------------------------------------------------------------------------
 
-function MaschineStudioController:setupButtonHandler()
+function MaschineSigmaController:setupButtonHandler()
 
     -- setup common handlers in base class
     HardwareControllerBase.setupButtonHandler(self)
@@ -382,7 +382,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function MaschineStudioController:onCustomProcess(ForceUpdate)
+function MaschineSigmaController:onCustomProcess(ForceUpdate)
 
     self.CapacitiveList:update()
     HardwareControllerBase.onCustomProcess(self, ForceUpdate)
@@ -393,7 +393,7 @@ end
 -- Timer
 ------------------------------------------------------------------------------------------------------------------------
 
-function MaschineStudioController:onControllerTimer()
+function MaschineSigmaController:onControllerTimer()
 
     if self.LevelMeter then
         self.LevelMeter:onTimer()
@@ -445,7 +445,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function MaschineStudioController:updateMetroLED()
+function MaschineSigmaController:updateMetroLED()
 
     local IsMetroOn = App:getMetronome():getEnabledParameter():getValue()
     LEDHelper.setLEDState(NI.HW.LED_TRANSPORT_METRO, IsMetroOn and LEDHelper.LS_BRIGHT or LEDHelper.LS_OFF)
@@ -454,7 +454,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function MaschineStudioController:onPageShow(Show)
+function MaschineSigmaController:onPageShow(Show)
 
     -- reset overlays before showing the page
     self.CapacitiveList:reset()
@@ -467,7 +467,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function MaschineStudioController:updatePageButtonLEDs()
+function MaschineSigmaController:updatePageButtonLEDs()
 
     -- call base
     HardwareControllerBase.updatePageButtonLEDs(self)
@@ -493,7 +493,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function MaschineStudioController:updateMacroButtonLED()
+function MaschineSigmaController:updateMacroButtonLED()
 
     local LedState = NHLController:getPageStack():getTopPage() == NI.HW.PAGE_CONTROL
         and (NI.DATA.ParameterPageAccess.isMacroPageActive(App) and LEDHelper.LS_BRIGHT or LEDHelper.LS_OFF)
@@ -505,7 +505,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function MaschineStudioController:updateStepButtonLED()
+function MaschineSigmaController:updateStepButtonLED()
 
     LEDHelper.setLEDState(NI.HW.LED_STEP, getLedStateForPage(NI.HW.PAGE_STEP_STUDIO))
 
@@ -513,7 +513,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function MaschineStudioController:updateSwitchLEDs()
+function MaschineSigmaController:updateSwitchLEDs()
 
     self:updateVolumeTempoSwingButtonLEDs()
 
@@ -523,7 +523,7 @@ end
 -- Pad/Group Handler
 ------------------------------------------------------------------------------------------------------------------------
 
-function MaschineStudioController:onPadEvent(PadIndex, Trigger, PadValue)
+function MaschineSigmaController:onPadEvent(PadIndex, Trigger, PadValue)
 
     if not self.ActivePage then
         return
@@ -548,7 +548,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function MaschineStudioController:onGroupButton(Index, Pressed)
+function MaschineSigmaController:onGroupButton(Index, Pressed)
 
     if not self.ActivePage then
         return
@@ -566,7 +566,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function MaschineStudioController:onPageButton(Button, PageID, Pressed)
+function MaschineSigmaController:onPageButton(Button, PageID, Pressed)
 
     if PageID == NI.HW.PAGE_STEP_STUDIO or PageID == NI.HW.PAGE_MACRO then
 
@@ -608,7 +608,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function MaschineStudioController:getShiftPageID(Button, CurPageID, Pressed)
+function MaschineSigmaController:getShiftPageID(Button, CurPageID, Pressed)
 
     if Button == NI.HW.BUTTON_PATTERN then -- overwrite base class behaviour
         return NI.HW.PAGE_PATTERN
@@ -620,7 +620,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function MaschineStudioController:onPageButtonShift(Button, Pressed)
+function MaschineSigmaController:onPageButtonShift(Button, Pressed)
 
     -- [SHIFT] + [NOTE_REPEAT] = Toggle Note Repeat
     if Pressed and Button == NI.HW.BUTTON_NOTE_REPEAT then
@@ -634,7 +634,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function MaschineStudioController:onControlButton(Pressed, Button)
+function MaschineSigmaController:onControlButton(Pressed, Button)
 
     local TopPage = NHLController:getPageStack():getTopPage()
 
@@ -659,7 +659,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function MaschineStudioController:onStepButton(Pressed)
+function MaschineSigmaController:onStepButton(Pressed)
 
     if Pressed then
         if NHLController:getPageStack():isPageInStack(NI.HW.PAGE_MACRO) then
@@ -674,7 +674,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function MaschineStudioController:onMacroButton(Pressed)
+function MaschineSigmaController:onMacroButton(Pressed)
 
     if self:getShiftPressed() then
         -- Demo page access (dev only)
@@ -694,7 +694,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function MaschineStudioController:onLevelSourceButton(Pressed, Button)
+function MaschineSigmaController:onLevelSourceButton(Pressed, Button)
 
     if not Pressed then
         return
@@ -717,7 +717,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function MaschineStudioController:onLevelEncoder(EncoderInc)
+function MaschineSigmaController:onLevelEncoder(EncoderInc)
 
     -- custom Level encoder handling
     if self.ActivePage and self.ActivePage.onLevelEncoder and
@@ -736,7 +736,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function MaschineStudioController:onWheelEvent(WheelID, WheelInc)
+function MaschineSigmaController:onWheelEvent(WheelID, WheelInc)
 
     -- Current page gets 1st priority
     if self.ActivePage and self.ActivePage:onWheel(WheelInc) then
@@ -775,7 +775,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function MaschineStudioController:onWheelButton(Pressed)
+function MaschineSigmaController:onWheelButton(Pressed)
 
     if self.ActivePage then
 
@@ -793,7 +793,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function MaschineStudioController:onPrevNextButton(Pressed, Next)
+function MaschineSigmaController:onPrevNextButton(Pressed, Next)
 
     -- Prio 1: Transport Erase + Loop Buttons
     local LoopPressed  = self.SwitchPressed[NI.HW.BUTTON_TRANSPORT_LOOP] and self:getShiftPressed()
@@ -824,7 +824,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function MaschineStudioController:onCapTouched(Cap, Touched)
+function MaschineSigmaController:onCapTouched(Cap, Touched)
 
     if not NHLController:getCapacitiveFeaturesEnabled() then
         return
@@ -840,7 +840,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function MaschineStudioController:onTapButton(Pressed)
+function MaschineSigmaController:onTapButton(Pressed)
 
     if not NI.APP.isStandalone() then
         return
@@ -864,7 +864,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function MaschineStudioController:onTapTempoInfoBar(Pressed)
+function MaschineSigmaController:onTapTempoInfoBar(Pressed)
 
     local InfoBar = self:getInfoBar()
     if InfoBar then
@@ -885,7 +885,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function MaschineStudioController:updateJogwheel()
+function MaschineSigmaController:updateJogwheel()
 
     LEDHelper.setLEDState(NI.HW.LED_JOGWHEEL_EDIT, LEDHelper.LS_OFF)
     LEDHelper.setLEDState(NI.HW.LED_JOGWHEEL_CHANNEL, LEDHelper.LS_OFF)
@@ -895,7 +895,7 @@ function MaschineStudioController:updateJogwheel()
 
     -- Priority 1: Erase / Loop Buttons
     if self:getErasePressed() and NI.APP.isStandalone() then
-        JogwheelLEDHelper.updateAllOn(MaschineStudioController.JOGWHEEL_RING_LEDS)
+        JogwheelLEDHelper.updateAllOn(MaschineSigmaController.JOGWHEEL_RING_LEDS)
         return
     end
 
@@ -910,13 +910,13 @@ function MaschineStudioController:updateJogwheel()
     end
 
     -- Default JW LED behaviour
-    JogwheelLEDHelper.updateAllOff(MaschineStudioController.JOGWHEEL_RING_LEDS)
+    JogwheelLEDHelper.updateAllOff(MaschineSigmaController.JOGWHEEL_RING_LEDS)
 
 end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function MaschineStudioController:getInfoBar()
+function MaschineSigmaController:getInfoBar()
 
     if not self.ActivePage then
         return nil
@@ -931,7 +931,7 @@ end
 -- EDIT CONTROLS
 ------------------------------------------------------------------------------------------------------------------------
 
-function MaschineStudioController:updateEditControlLEDs()
+function MaschineSigmaController:updateEditControlLEDs()
 
     local ButtonState
     local HasEvents = ActionHelper.hasEvents()
@@ -972,7 +972,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function MaschineStudioController:onCopyButton(Pressed)
+function MaschineSigmaController:onCopyButton(Pressed)
 
     if Pressed and ActionHelper.hasEvents() then
         NI.DATA.NoteEventClipboardAccess.copySelectedNoteEvents(App)
@@ -982,7 +982,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function MaschineStudioController:onPasteButton(Pressed)
+function MaschineSigmaController:onPasteButton(Pressed)
 
     if Pressed and ActionHelper.canPaste() then
         NI.DATA.NoteEventClipboardAccess.pasteNoteEvents(App)
@@ -992,7 +992,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function MaschineStudioController:onNoteButton(Pressed)
+function MaschineSigmaController:onNoteButton(Pressed)
 
     -- [SHIFT] + [NOTE] = PAGE_VARIATION
     if self:getShiftPressed() or NHLController:getPageStack():getTopPage() == NI.HW.PAGE_VARIATION then
@@ -1005,7 +1005,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function MaschineStudioController:onNudgeButton(Pressed)
+function MaschineSigmaController:onNudgeButton(Pressed)
 
     if ActionHelper.hasEvents() then
         self.QuickEdit:onNudgeButton(Pressed)
@@ -1015,7 +1015,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function MaschineStudioController:onUndoButton(Pressed)
+function MaschineSigmaController:onUndoButton(Pressed)
 
     if Pressed and self:getShiftPressed() and ActionHelper.canUndo(true) then
         App:getTransactionManager():undoTransaction()					-- Undo single step
@@ -1028,7 +1028,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function MaschineStudioController:onRedoButton(Pressed)
+function MaschineSigmaController:onRedoButton(Pressed)
 
     if Pressed and self:getShiftPressed() and ActionHelper.canRedo(true) then
         App:getTransactionManager():redoTransaction()
@@ -1041,7 +1041,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function MaschineStudioController:onQuantizeButton(Pressed)
+function MaschineSigmaController:onQuantizeButton(Pressed)
 
     if Pressed and ActionHelper.hasEvents() then
         NI.DATA.EventPatternTools.quantizeNoteEvents(App, self:getShiftPressed())
@@ -1051,7 +1051,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function MaschineStudioController:onClearButton(Pressed)
+function MaschineSigmaController:onClearButton(Pressed)
 
     if Pressed and ActionHelper.hasEvents() then
         if self:getShiftPressed() then
@@ -1065,7 +1065,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function MaschineStudioController:onScreenEncoder(Index, EncoderInc)
+function MaschineSigmaController:onScreenEncoder(Index, EncoderInc)
 
     HardwareControllerBase.onScreenEncoder(self, Index, EncoderInc)
 
@@ -1073,7 +1073,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function MaschineStudioController:openBusyDialog()
+function MaschineSigmaController:openBusyDialog()
 
     self.CapacitiveList:setEnabled(false)
     local OverlayRoot = NHLController:getHardwareDisplay():getOverlayRoot()
@@ -1085,7 +1085,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function MaschineStudioController:closeBusyDialog()
+function MaschineSigmaController:closeBusyDialog()
 
     HardwareControllerBase.closeBusyDialog(self)
     self.CapacitiveList:setEnabled(true)
@@ -1094,7 +1094,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function MaschineStudioController:onFootswitchDetect(Index, Pressed)
+function MaschineSigmaController:onFootswitchDetect(Index, Pressed)
 
     if self.ActivePage and self.ActivePage.onFootswitchDetect then
         self.ActivePage:onFootswitchDetect(Index, Pressed)
@@ -1106,7 +1106,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function MaschineStudioController:onFootswitchTip(Index, Pressed)
+function MaschineSigmaController:onFootswitchTip(Index, Pressed)
 
     if self.ActivePage and self.ActivePage.onFootswitchTip then
         self.ActivePage:onFootswitchTip(Index, Pressed)
@@ -1118,7 +1118,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function MaschineStudioController:onFootswitchRing(Index, Pressed)
+function MaschineSigmaController:onFootswitchRing(Index, Pressed)
 
     if self.ActivePage and self.ActivePage.onFootswitchRing then
         self.ActivePage:onFootswitchRing(Index, Pressed)
@@ -1130,7 +1130,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function MaschineStudioController:onPatternButton(Pressed)
+function MaschineSigmaController:onPatternButton(Pressed)
 
     -- pressing SHIFT + PATTERN should always show the Clip Page, which requires clips to be focused
     if Pressed and self:getShiftPressed() then
@@ -1158,7 +1158,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-function MaschineStudioController:onSceneButton(Pressed)
+function MaschineSigmaController:onSceneButton(Pressed)
 
     -- pressing SHIFT + SCENE should always show the Section Page, which might require a view switch
     if Pressed and self:getShiftPressed() then
@@ -1183,7 +1183,7 @@ function MaschineStudioController:onSceneButton(Pressed)
 end
 
 -- start hack
-function MaschineStudioController:onAllButton(Pressed)
+function MaschineSigmaController:onAllButton(Pressed)
 
     local PageStack = NHLController:getPageStack()
 
@@ -1203,16 +1203,16 @@ function MaschineStudioController:onAllButton(Pressed)
         end
 
     else
-        MaschineStudioController.onPageButton(self, NI.HW.BUTTON_ALL, NI.HW.PAGE_FILE, Pressed)
+        MaschineSigmaController.onPageButton(self, NI.HW.BUTTON_ALL, NI.HW.PAGE_FILE, Pressed)
     end
 
 end
 
-function MaschineStudioController:clearTempPage()
+function MaschineSigmaController:clearTempPage()
 
     local TopPageID = NHLController:getPageStack():getTopPage()
 
-    for Index, TempPageID in ipairs(MaschineStudioController.TEMPORARY_PAGES) do
+    for Index, TempPageID in ipairs(MaschineSigmaController.TEMPORARY_PAGES) do
 
         if TopPageID ~= TempPageID then
 
@@ -1228,7 +1228,7 @@ end
 -- Create Instance
 ------------------------------------------------------------------------------------------------------------------------
 if not NI.HW.FEATURE.MK3 then
-ControllerScriptInterface = MaschineStudioController()
+ControllerScriptInterface = MaschineSigmaController()
 end
 
 ------------------------------------------------------------------------------------------------------------------------

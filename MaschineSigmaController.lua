@@ -128,9 +128,4 @@ function MaschineSigmaController:clearTempPage()
 end
 
 -- Create Instance
-------------------------------------------------------------------------------------------------------------------------
-if not NI.HW.FEATURE.MK3 then
 ControllerScriptInterface = MaschineSigmaController()
-end
-
-------------------------------------------------------------------------------------------------------------------------

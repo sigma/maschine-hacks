@@ -1,0 +1,11 @@
+--- a/Controllers.lua
++++ b/Controllers.lua
+@@ -19,7 +19,7 @@
+ 
+ elseif Model == "MS1" then
+ 
+-    require "Scripts/Maschine/MaschineStudio/MaschineStudioController"
++    require "Scripts/Maschine/MaschineStudioSigma/MaschineStudioSigmaController"
+ 
+ elseif Model == "KK25" or Model == "KK49" or Model == "KK61" or Model == "KK88" then
+ 

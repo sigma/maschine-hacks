@@ -7,21 +7,21 @@ require "Scripts/Shared/Helpers/MaschineHelper"
 
 local class = require 'Scripts/Shared/Helpers/classy'
 -- Inherit from Maschine Studio to limit the scope of modifications
-MaschineSigmaController = class( 'MaschineSigmaController', MaschineStudioController )
+MaschineStudioSigmaController = class( 'MaschineStudioSigmaController', MaschineStudioController )
 
 -- Expose constants for code that doesn't really handle inheritance
-MaschineSigmaController.SCREEN_BUTTON_LEDS = MaschineStudioController.SCREEN_BUTTON_LEDS
-MaschineSigmaController.SCREEN_BUTTONS = MaschineStudioController.SCREEN_BUTTONS
-MaschineSigmaController.GROUP_LEDS = MaschineStudioController.GROUP_LEDS
-MaschineSigmaController.JOGWHEEL_RING_LEDS = MaschineStudioController.JOGWHEEL_RING_LEDS
-MaschineSigmaController.LEVELMETER_LEFT_LEDS = MaschineStudioController.LEVELMETER_LEFT_LEDS
-MaschineSigmaController.LEVELMETER_RIGHT_LEDS = MaschineStudioController.LEVELMETER_RIGHT_LEDS
-MaschineSigmaController.GROUP_BUTTONS = MaschineStudioController.GROUP_BUTTONS
-MaschineStudioController.BUTTON_TO_PAGE = MaschineStudioController.BUTTON_TO_PAGE
-MaschineSigmaController.LEDValues = MaschineStudioController.LEDValues
+MaschineStudioSigmaController.SCREEN_BUTTON_LEDS = MaschineStudioController.SCREEN_BUTTON_LEDS
+MaschineStudioSigmaController.SCREEN_BUTTONS = MaschineStudioController.SCREEN_BUTTONS
+MaschineStudioSigmaController.GROUP_LEDS = MaschineStudioController.GROUP_LEDS
+MaschineStudioSigmaController.JOGWHEEL_RING_LEDS = MaschineStudioController.JOGWHEEL_RING_LEDS
+MaschineStudioSigmaController.LEVELMETER_LEFT_LEDS = MaschineStudioController.LEVELMETER_LEFT_LEDS
+MaschineStudioSigmaController.LEVELMETER_RIGHT_LEDS = MaschineStudioController.LEVELMETER_RIGHT_LEDS
+MaschineStudioSigmaController.GROUP_BUTTONS = MaschineStudioController.GROUP_BUTTONS
+MaschineStudioSigmaController.BUTTON_TO_PAGE = MaschineStudioController.BUTTON_TO_PAGE
+MaschineStudioSigmaController.LEDValues = MaschineStudioController.LEDValues
 
 -- Add PAGE_FILE to the list of modifier pages
-MaschineSigmaController.MODIFIER_PAGES = 
+MaschineStudioSigmaController.MODIFIER_PAGES =
 {
     NI.HW.PAGE_DUPLICATE,
     NI.HW.PAGE_GRID,
@@ -41,31 +41,31 @@ MaschineSigmaController.MODIFIER_PAGES =
 }
 
 -- Define PAGE_SAVE_AS as a temporary page
-MaschineSigmaController.TEMPORARY_PAGES =
+MaschineStudioSigmaController.TEMPORARY_PAGES =
 {
     NI.HW.PAGE_SAVE_AS
 }
 
-function MaschineSigmaController:__init()
+function MaschineStudioSigmaController:__init()
     MaschineStudioController.__init(self)
 end
 
 -- Register additional pages to handle files
-function MaschineSigmaController:createPages()
+function MaschineStudioSigmaController:createPages()
     MaschineStudioController.createPages(self)
 
-    self.PageManager:register(NI.HW.PAGE_FILE, "Scripts/Maschine/MaschineSigma/FilePageSigma", "FilePageSigma", true)
+    self.PageManager:register(NI.HW.PAGE_FILE, "Scripts/Maschine/MaschineStudioSigma/FilePageSigma", "FilePageSigma", true)
     self.PageManager:register(NI.HW.PAGE_SAVE_AS, "Scripts/Maschine/Shared/Pages/SaveAsPage", "SaveAsPage", true)
 end
 
 -- Clear any temporary page when a button is activated
-function MaschineSigmaController:onPageButton(Button, PageID, Pressed)
+function MaschineStudioSigmaController:onPageButton(Button, PageID, Pressed)
     MaschineStudioController.onPageButton(self, Button, PageID, Pressed)
     self:clearTempPage()
 end
 
 -- The following are adapted from MK3 File code
-function MaschineSigmaController:onAllButton(Pressed)
+function MaschineStudioSigmaController:onAllButton(Pressed)
     local PageStack = NHLController:getPageStack()
 
     if NHLController:isInModalState() then
@@ -81,17 +81,17 @@ function MaschineSigmaController:onAllButton(Pressed)
             MaschineHelper.saveProject(self:getInfoBar(), InfoBarTempMode)
         end
     else
-        MaschineSigmaController.onPageButton(self, NI.HW.BUTTON_ALL, NI.HW.PAGE_FILE, Pressed)
+        MaschineStudioSigmaController.onPageButton(self, NI.HW.BUTTON_ALL, NI.HW.PAGE_FILE, Pressed)
     end
 end
 
-function MaschineSigmaController:clearTempPage()
+function MaschineStudioSigmaController:clearTempPage()
     local TopPageID = NHLController:getPageStack():getTopPage()
-    for Index, TempPageID in ipairs(MaschineSigmaController.TEMPORARY_PAGES) do
+    for Index, TempPageID in ipairs(MaschineStudioSigmaController.TEMPORARY_PAGES) do
         if TopPageID ~= TempPageID then
             NHLController:getPageStack():removePage(TempPageID)
         end
     end
 end
 
-ControllerScriptInterface = MaschineSigmaController()
+ControllerScriptInterface = MaschineStudioSigmaController()

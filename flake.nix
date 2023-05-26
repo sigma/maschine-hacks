@@ -1,10 +1,11 @@
 {
   description = "Maschine hacks";
 
-  inputs.flake-utils.url = "github:numtide/flake-utils";
+  inputs.systems.url = "github:nix-systems/default";
 
-  outputs = { self, nixpkgs, flake-utils }:
+  outputs = { self, nixpkgs, systems }:
     let
+      eachSystem = nixpkgs.lib.genAttrs (import systems);
       name = "maschine-hacks";
       pkg = pkgs: pkgs.stdenv.mkDerivation {
         pname = name;
@@ -37,17 +38,15 @@
           '';
       };
     in
-      flake-utils.lib.eachSystem [
-        flake-utils.lib.system.aarch64-darwin
-        flake-utils.lib.system.x86_64-darwin
-      ] (system:
-        let
-          pkgs = import nixpkgs { inherit system; };
-        in rec {
-          defaultPackage = packages.maschine-hacks;
-          packages.maschine-hacks = pkg pkgs;
-        }
-      ) // {
+      rec {
+        packages = eachSystem (system: let
+            pkgs = import nixpkgs { inherit system; };
+          in {
+            maschine-hacks = pkg pkgs;
+          }
+        );
+        defaultPackage = eachSystem (system: packages.${system}.maschine-hacks);
+      } // {
         overlays.default = (final: prev: {
           maschine-hacks = pkg prev;
         });

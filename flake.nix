@@ -1,11 +1,11 @@
 {
   description = "Maschine hacks";
 
-  inputs.systems.url = "github:nix-systems/default";
+  # flake-parts
+  inputs.flake-parts.url = "github:hercules-ci/flake-parts";
 
-  outputs = { self, nixpkgs, systems }:
+  outputs = inputs@{ nixpkgs, flake-parts, ... }:
     let
-      eachSystem = nixpkgs.lib.genAttrs (import systems);
       name = "maschine-hacks";
       pkg = pkgs: pkgs.stdenv.mkDerivation {
         pname = name;
@@ -38,14 +38,20 @@
           '';
       };
     in
-      rec {
-        packages = eachSystem (system: let
-            pkgs = import nixpkgs { inherit system; };
+      flake-parts.lib.mkFlake { inherit inputs; } {
+        systems = [
+          "x86_64-darwin"
+          "aarch64-darwin"
+        ];
+
+        perSystem = {config, system, pkgs, inputs', ...}: {
+          packages = let
+            default = pkg pkgs;
           in {
-            maschine-hacks = pkg pkgs;
-          }
-        );
-        defaultPackage = eachSystem (system: packages.${system}.maschine-hacks);
+            inherit default;
+            maschine-hacks = default;
+          };
+        };
       } // {
         overlays.default = (final: prev: {
           maschine-hacks = pkg prev;

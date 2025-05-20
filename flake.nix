@@ -9,8 +9,8 @@
       name = "maschine-hacks";
       pkg = pkgs: pkgs.stdenv.mkDerivation {
         pname = name;
-        version = "0.1";
-        src = ./.;
+        version = "0.1.1";
+        src = builtins.path { path = ./.; name = "source"; };
 
         buildPhase = ''
             cat <<EOF > maschine-patch
